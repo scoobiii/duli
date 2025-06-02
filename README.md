@@ -458,5 +458,513 @@ graph TB
     style CloudWatch fill:#ffff99
 
 
+# DULI - Estrutura Completa do Projeto
+
+```
+duli-platform/
+├── README.md
+├── docker-compose.yml
+├── docker-compose.prod.yml
+├── .env.example
+├── .gitignore
+├── Makefile
+├── skaffold.yaml
+├── package.json
+└── lerna.json
+
+├── apps/
+│   ├── web-frontend/                    # React/Next.js Frontend
+│   │   ├── package.json
+│   │   ├── next.config.js
+│   │   ├── tailwind.config.js
+│   │   ├── tsconfig.json
+│   │   ├── .env.local.example
+│   │   ├── public/
+│   │   │   ├── favicon.ico
+│   │   │   ├── logo.svg
+│   │   │   ├── icons/
+│   │   │   └── images/
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   │   ├── ui/
+│   │   │   │   │   ├── Button.tsx
+│   │   │   │   │   ├── Input.tsx
+│   │   │   │   │   ├── Modal.tsx
+│   │   │   │   │   ├── Loading.tsx
+│   │   │   │   │   └── Treemap.tsx
+│   │   │   │   ├── layout/
+│   │   │   │   │   ├── Header.tsx
+│   │   │   │   │   ├── Sidebar.tsx
+│   │   │   │   │   ├── Footer.tsx
+│   │   │   │   │   └── Layout.tsx
+│   │   │   │   ├── forms/
+│   │   │   │   │   ├── LoginForm.tsx
+│   │   │   │   │   ├── ImageUploadForm.tsx
+│   │   │   │   │   └── PatientForm.tsx
+│   │   │   │   ├── medical/
+│   │   │   │   │   ├── ImageViewer.tsx
+│   │   │   │   │   ├── PredictionResults.tsx
+│   │   │   │   │   ├── DicomViewer.tsx
+│   │   │   │   │   └── ReportGenerator.tsx
+│   │   │   │   └── charts/
+│   │   │   │       ├── TreemapChart.tsx
+│   │   │   │       ├── ConfidenceChart.tsx
+│   │   │   │       └── HistoryChart.tsx
+│   │   │   ├── pages/
+│   │   │   │   ├── _app.tsx
+│   │   │   │   ├── _document.tsx
+│   │   │   │   ├── index.tsx
+│   │   │   │   ├── login.tsx
+│   │   │   │   ├── dashboard.tsx
+│   │   │   │   ├── predictions/
+│   │   │   │   │   ├── index.tsx
+│   │   │   │   │   ├── new.tsx
+│   │   │   │   │   └── [id].tsx
+│   │   │   │   ├── patients/
+│   │   │   │   │   ├── index.tsx
+│   │   │   │   │   └── [id].tsx
+│   │   │   │   └── reports/
+│   │   │   │       ├── index.tsx
+│   │   │   │       └── [id].tsx
+│   │   │   ├── hooks/
+│   │   │   │   ├── useAuth.ts
+│   │   │   │   ├── useImageUpload.ts
+│   │   │   │   ├── usePredictions.ts
+│   │   │   │   └── useWebSocket.ts
+│   │   │   ├── services/
+│   │   │   │   ├── api.ts
+│   │   │   │   ├── auth.ts
+│   │   │   │   ├── predictions.ts
+│   │   │   │   ├── images.ts
+│   │   │   │   └── reports.ts
+│   │   │   ├── utils/
+│   │   │   │   ├── constants.ts
+│   │   │   │   ├── helpers.ts
+│   │   │   │   ├── validation.ts
+│   │   │   │   └── formatters.ts
+│   │   │   ├── types/
+│   │   │   │   ├── api.ts
+│   │   │   │   ├── user.ts
+│   │   │   │   ├── prediction.ts
+│   │   │   │   └── image.ts
+│   │   │   └── styles/
+│   │   │       ├── globals.css
+│   │   │       ├── components.css
+│   │   │       └── medical.css
+│   │   └── tests/
+│   │       ├── __mocks__/
+│   │       ├── components/
+│   │       ├── pages/
+│   │       └── utils/
+│   │
+│   ├── mobile-app/                      # React Native Mobile
+│   │   ├── package.json
+│   │   ├── metro.config.js
+│   │   ├── react-native.config.js
+│   │   ├── android/
+│   │   ├── ios/
+│   │   └── src/
+│   │       ├── components/
+│   │       ├── screens/
+│   │       ├── navigation/
+│   │       ├── services/
+│   │       ├── hooks/
+│   │       └── utils/
+│   │
+│   └── admin-dashboard/                 # Admin React App
+│       ├── package.json
+│       ├── src/
+│       │   ├── components/
+│       │   ├── pages/
+│       │   ├── services/
+│       │   └── utils/
+│       └── public/
+
+├── services/                           # Backend Microservices
+│   ├── api-gateway/                    # API Gateway Service
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── src/
+│   │   │   ├── app.js
+│   │   │   ├── routes/
+│   │   │   │   ├── auth.js
+│   │   │   │   ├── images.js
+│   │   │   │   ├── predictions.js
+│   │   │   │   └── reports.js
+│   │   │   ├── middleware/
+│   │   │   │   ├── auth.js
+│   │   │   │   ├── rateLimit.js
+│   │   │   │   ├── cors.js
+│   │   │   │   └── validation.js
+│   │   │   ├── config/
+│   │   │   │   └── index.js
+│   │   │   └── utils/
+│   │   │       ├── logger.js
+│   │   │       └── errorHandler.js
+│   │   └── tests/
+│   │
+│   ├── auth-service/                   # Authentication Service
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── src/
+│   │   │   ├── app.js
+│   │   │   ├── controllers/
+│   │   │   │   ├── authController.js
+│   │   │   │   └── userController.js
+│   │   │   ├── models/
+│   │   │   │   ├── User.js
+│   │   │   │   └── Role.js
+│   │   │   ├── services/
+│   │   │   │   ├── authService.js
+│   │   │   │   ├── jwtService.js
+│   │   │   │   └── rbacService.js
+│   │   │   ├── routes/
+│   │   │   │   └── authRoutes.js
+│   │   │   ├── middleware/
+│   │   │   │   ├── validation.js
+│   │   │   │   └── security.js
+│   │   │   ├── config/
+│   │   │   │   ├── database.js
+│   │   │   │   └── jwt.js
+│   │   │   └── utils/
+│   │   │       ├── encryption.js
+│   │   │       └── password.js
+│   │   └── tests/
+│   │
+│   ├── image-service/                  # Image Processing Service
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   ├── src/
+│   │   │   ├── app.py
+│   │   │   ├── controllers/
+│   │   │   │   ├── image_controller.py
+│   │   │   │   └── dicom_controller.py
+│   │   │   ├── services/
+│   │   │   │   ├── image_processor.py
+│   │   │   │   ├── dicom_parser.py
+│   │   │   │   ├── storage_service.py
+│   │   │   │   └── preprocessing.py
+│   │   │   ├── models/
+│   │   │   │   ├── image_model.py
+│   │   │   │   └── metadata_model.py
+│   │   │   ├── routes/
+│   │   │   │   └── image_routes.py
+│   │   │   ├── utils/
+│   │   │   │   ├── validators.py
+│   │   │   │   ├── converters.py
+│   │   │   │   └── helpers.py
+│   │   │   └── config/
+│   │   │       ├── settings.py
+│   │   │       └── storage.py
+│   │   └── tests/
+│   │
+│   ├── prediction-service/             # AI Prediction Service
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   ├── src/
+│   │   │   ├── app.py
+│   │   │   ├── controllers/
+│   │   │   │   └── prediction_controller.py
+│   │   │   ├── services/
+│   │   │   │   ├── ml_service.py
+│   │   │   │   ├── model_manager.py
+│   │   │   │   ├── inference_service.py
+│   │   │   │   └── ab_testing.py
+│   │   │   ├── models/
+│   │   │   │   ├── prediction_model.py
+│   │   │   │   └── ml_models/
+│   │   │   │       ├── covid_model.py
+│   │   │   │       ├── pneumonia_model.py
+│   │   │   │       └── ensemble_model.py
+│   │   │   ├── routes/
+│   │   │   │   └── prediction_routes.py
+│   │   │   ├── utils/
+│   │   │   │   ├── preprocessing.py
+│   │   │   │   ├── postprocessing.py
+│   │   │   │   └── metrics.py
+│   │   │   └── config/
+│   │   │       ├── ml_config.py
+│   │   │       └── model_config.py
+│   │   └── tests/
+│   │
+│   ├── audit-service/                  # Audit and Compliance Service
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── src/
+│   │   │   ├── app.js
+│   │   │   ├── controllers/
+│   │   │   │   ├── auditController.js
+│   │   │   │   └── complianceController.js
+│   │   │   ├── services/
+│   │   │   │   ├── auditService.js
+│   │   │   │   ├── complianceService.js
+│   │   │   │   └── reportingService.js
+│   │   │   ├── models/
+│   │   │   │   ├── AuditLog.js
+│   │   │   │   └── ComplianceReport.js
+│   │   │   ├── routes/
+│   │   │   │   └── auditRoutes.js
+│   │   │   └── utils/
+│   │   │       ├── logger.js
+│   │   │       └── encryption.js
+│   │   └── tests/
+│   │
+│   ├── report-service/                 # Medical Report Service
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── src/
+│   │   │   ├── app.js
+│   │   │   ├── controllers/
+│   │   │   │   └── reportController.js
+│   │   │   ├── services/
+│   │   │   │   ├── reportService.js
+│   │   │   │   ├── pdfService.js
+│   │   │   │   ├── hl7Service.js
+│   │   │   │   └── pacsService.js
+│   │   │   ├── models/
+│   │   │   │   └── Report.js
+│   │   │   ├── templates/
+│   │   │   │   ├── medical-report.hbs
+│   │   │   │   └── summary-report.hbs
+│   │   │   ├── routes/
+│   │   │   │   └── reportRoutes.js
+│   │   │   └── utils/
+│   │   │       ├── pdfGenerator.js
+│   │   │       └── hl7Mapper.js
+│   │   └── tests/
+│   │
+│   └── notification-service/           # Notification Service
+│       ├── Dockerfile
+│       ├── package.json
+│       ├── src/
+│       │   ├── app.js
+│       │   ├── controllers/
+│       │   │   └── notificationController.js
+│       │   ├── services/
+│       │   │   ├── emailService.js
+│       │   │   ├── smsService.js
+│       │   │   └── pushService.js
+│       │   ├── templates/
+│       │   │   ├── email/
+│       │   │   └── sms/
+│       │   └── routes/
+│       │       └── notificationRoutes.js
+│       └── tests/
+
+├── infrastructure/                     # Infrastructure as Code
+│   ├── terraform/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   │   ├── modules/
+│   │   │   ├── eks/
+│   │   │   ├── rds/
+│   │   │   ├── s3/
+│   │   │   └── vpc/
+│   │   └── environments/
+│   │       ├── dev/
+│   │       ├── staging/
+│   │       └── prod/
+│   │
+│   ├── kubernetes/
+│   │   ├── base/
+│   │   │   ├── namespace.yaml
+│   │   │   ├── configmap.yaml
+│   │   │   ├── secrets.yaml
+│   │   │   └── rbac.yaml
+│   │   ├── services/
+│   │   │   ├── api-gateway/
+│   │   │   │   ├── deployment.yaml
+│   │   │   │   ├── service.yaml
+│   │   │   │   ├── ingress.yaml
+│   │   │   │   └── hpa.yaml
+│   │   │   ├── auth-service/
+│   │   │   ├── image-service/
+│   │   │   ├── prediction-service/
+│   │   │   ├── audit-service/
+│   │   │   └── report-service/
+│   │   └── overlays/
+│   │       ├── dev/
+│   │       ├── staging/
+│   │       └── prod/
+│   │
+│   └── helm/
+│       ├── duli-platform/
+│       │   ├── Chart.yaml
+│       │   ├── values.yaml
+│       │   ├── values-dev.yaml
+│       │   ├── values-staging.yaml
+│       │   ├── values-prod.yaml
+│       │   └── templates/
+│       └── monitoring/
+│           ├── prometheus/
+│           ├── grafana/
+│           └── elasticsearch/
+
+├── ml-pipeline/                        # ML Pipeline and Training
+│   ├── data/
+│   │   ├── raw/
+│   │   ├── processed/
+│   │   ├── features/
+│   │   └── models/
+│   │
+│   ├── notebooks/
+│   │   ├── exploratory-analysis.ipynb
+│   │   ├── feature-engineering.ipynb
+│   │   ├── model-training.ipynb
+│   │   └── model-evaluation.ipynb
+│   │
+│   ├── src/
+│   │   ├── data/
+│   │   │   ├── data_loader.py
+│   │   │   ├── preprocessor.py
+│   │   │   └── augmentation.py
+│   │   ├── features/
+│   │   │   ├── feature_extractor.py
+│   │   │   └── feature_selector.py
+│   │   ├── models/
+│   │   │   ├── base_model.py
+│   │   │   ├── cnn_model.py
+│   │   │   ├── resnet_model.py
+│   │   │   ├── ensemble_model.py
+│   │   │   └── model_registry.py
+│   │   ├── training/
+│   │   │   ├── trainer.py
+│   │   │   ├── validator.py
+│   │   │   └── hyperparameter_tuning.py
+│   │   ├── evaluation/
+│   │   │   ├── metrics.py
+│   │   │   ├── evaluator.py
+│   │   │   └── model_comparison.py
+│   │   └── deployment/
+│   │       ├── model_deployer.py
+│   │       └── model_monitor.py
+│   │
+│   ├── pipelines/
+│   │   ├── training_pipeline.py
+│   │   ├── inference_pipeline.py
+│   │   └── batch_prediction_pipeline.py
+│   │
+│   ├── configs/
+│   │   ├── model_config.yaml
+│   │   ├── training_config.yaml
+│   │   └── deployment_config.yaml
+│   │
+│   └── requirements.txt
+
+├── docs/                              # Documentation
+│   ├── api/
+│   │   ├── openapi.yaml
+│   │   ├── auth-service.md
+│   │   ├── image-service.md
+│   │   ├── prediction-service.md
+│   │   └── report-service.md
+│   ├── architecture/
+│   │   ├── system-design.md
+│   │   ├── data-flow.md
+│   │   └── security.md
+│   ├── deployment/
+│   │   ├── local-setup.md
+│   │   ├── staging-deploy.md
+│   │   └── production-deploy.md
+│   ├── user-guides/
+│   │   ├── medical-professional.md
+│   │   ├── admin-guide.md
+│   │   └── patient-guide.md
+│   └── development/
+│       ├── contributing.md
+│       ├── coding-standards.md
+│       └── testing-guide.md
+
+├── scripts/                           # Utility Scripts
+│   ├── setup/
+│   │   ├── install-dependencies.sh
+│   │   ├── setup-database.sh
+│   │   └── generate-certificates.sh
+│   ├── deployment/
+│   │   ├── deploy-dev.sh
+│   │   ├── deploy-staging.sh
+│   │   └── deploy-prod.sh
+│   ├── maintenance/
+│   │   ├── backup-database.sh
+│   │   ├── clean-storage.sh
+│   │   └── update-models.sh
+│   └── monitoring/
+│       ├── health-check.sh
+│       └── performance-test.sh
+
+├── tests/                             # Integration and E2E Tests
+│   ├── integration/
+│   │   ├── api-gateway.test.js
+│   │   ├── auth-flow.test.js
+│   │   ├── prediction-flow.test.js
+│   │   └── report-generation.test.js
+│   ├── e2e/
+│   │   ├── user-journey.test.js
+│   │   ├── medical-workflow.test.js
+│   │   └── admin-workflow.test.js
+│   └── performance/
+│       ├── load-test.js
+│       └── stress-test.js
+
+├── monitoring/                        # Monitoring and Observability
+│   ├── prometheus/
+│   │   ├── prometheus.yml
+│   │   └── rules/
+│   ├── grafana/
+│   │   ├── dashboards/
+│   │   │   ├── system-overview.json
+│   │   │   ├── ml-performance.json
+│   │   │   └── business-metrics.json
+│   │   └── provisioning/
+│   ├── elasticsearch/
+│   │   └── logstash/
+│   └── jaeger/
+│       └── jaeger-config.yml
+
+└── .github/                          # GitHub Actions CI/CD
+    └── workflows/
+        ├── ci.yml
+        ├── cd-dev.yml
+        ├── cd-staging.yml
+        ├── cd-prod.yml
+        ├── security-scan.yml
+        └── dependency-update.yml
+```
+
+## 📋 Resumo da Estrutura
+
+### **Frontend Apps**
+- **web-frontend**: React/Next.js para médicos e profissionais
+- **mobile-app**: React Native para uso móvel
+- **admin-dashboard**: Interface administrativa
+
+### **Backend Services**
+- **api-gateway**: Ponto único de entrada
+- **auth-service**: Autenticação e autorização
+- **image-service**: Processamento de imagens médicas
+- **prediction-service**: IA e predições
+- **audit-service**: Auditoria e compliance
+- **report-service**: Geração de relatórios médicos
+- **notification-service**: Notificações
+
+### **Infrastructure**
+- **terraform**: Infraestrutura como código
+- **kubernetes**: Orquestração de containers
+- **helm**: Gerenciamento de aplicações K8s
+
+### **ML Pipeline**
+- Pipeline completo de treinamento
+- Notebooks para análise
+- Modelos e experimentos
+- Deploy automatizado
+
+### **DevOps & Monitoring**
+- CI/CD com GitHub Actions
+- Monitoramento com Prometheus/Grafana
+- Logs centralizados com ELK Stack
+- Testes automatizados
+
+
 
 
