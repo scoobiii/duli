@@ -1,5 +1,11 @@
 ### Projeto DULI 
 
+De detector universal de lesões para framewok de saúde
+
+https://devpost.com/software/covid-19-detect-ii
+
+
+
 graph TB
     subgraph "Interface do Usuário"
         UI[Streamlit Web Interface]
